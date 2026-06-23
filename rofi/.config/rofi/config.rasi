@@ -1,0 +1,11 @@
+configuration {
+  font: "MesloLGS Nerd Font 11";
+  modi: "drun,run,emoji";
+  show-icons: true;
+  icon-theme: "Adwaita";
+  drun-display-format: "{name}";
+  disable-history: false;
+  sort: false;
+}
+
+@theme "~/.config/rofi/theme.rasi"

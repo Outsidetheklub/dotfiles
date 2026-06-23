@@ -1,0 +1,120 @@
+* {
+    bg:                          #232732;
+    bg-alt:                      #3B4252;
+    fg:                          #cdd6f4;
+    fg-alt:                      #a6adc8;
+    blue:                        #89b4fa;
+    red:                         #f38ba8;
+    background-color:            #232732;
+    foreground:                  #cdd6f4;
+    border-color:                #3B4252;
+    separatorcolor:              #232732;
+    normal-background:           #232732;
+    normal-foreground:           #cdd6f4;
+    alternate-normal-background: #232732;
+    alternate-normal-foreground: #cdd6f4;
+    selected-normal-background:  #3B4252;
+    selected-normal-foreground:  #89b4fa;
+    active-background:           #3B4252;
+    active-foreground:           #89b4fa;
+    alternate-active-background: #3B4252;
+    alternate-active-foreground: #89b4fa;
+    selected-active-background:  #3B4252;
+    selected-active-foreground:  #89b4fa;
+    urgent-background:           #f38ba8;
+    urgent-foreground:           #cdd6f4;
+    alternate-urgent-background: #f38ba8;
+    alternate-urgent-foreground: #cdd6f4;
+    selected-urgent-background:  #f38ba8;
+    selected-urgent-foreground:  #cdd6f4;
+    scrollbar:                   false;
+    background-image:            none;
+    highlight:                   bold;
+    spacing:                     0;
+    padding:                     0;
+    margin:                      0;
+}
+window {
+    background-color:            #232732;
+    border-radius:               0;
+    width:                       33%;
+    location:                    north east;
+    padding:                     0;
+    spacing:                     0;
+}
+mainbox {
+    background-color:            #232732;
+    border:                      0;
+    padding:                     0;
+    spacing:                     0;
+}
+inputbar {
+    background-color:            #232732;
+    padding:                     10px 14px;
+    spacing:                     10px;
+    children:                    [prompt, entry];
+}
+prompt {
+    text-color:                  #89b4fa;
+    padding:                     0;
+}
+entry {
+    text-color:                  #cdd6f4;
+    placeholder-text-color:      #a6adc8;
+    font:                        "MesloLGS Nerd Font 11";
+    padding:                     0;
+}
+listview {
+    background-color:            #232732;
+    padding:                     0;
+    spacing:                     0;
+    scrollbar:                   false;
+    fixed-height:                false;
+    columns:                     1;
+    lines:                       40;
+}
+element {
+    background-color:            #232732;
+    text-color:                  #cdd6f4;
+    padding:                     8px 14px;
+    spacing:                     0;
+    border:                      0;
+}
+element selected {
+    background-color:            #3B4252;
+    text-color:                  #89b4fa;
+}
+element-icon {
+    background-color:            transparent;
+    size:                        24px;
+    padding:                     0 10px 0 0;
+}
+element-text {
+    background-color:            transparent;
+    text-color:                  #cdd6f4;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+mode-switcher {
+    background-color:            #232732;
+    padding:                     6px 14px;
+    spacing:                     0;
+}
+button {
+    background-color:            transparent;
+    text-color:                  #a6adc8;
+    padding:                     4px 10px;
+}
+button selected {
+    text-color:                  #89b4fa;
+    background-color:            transparent;
+}
+message {
+    background-color:            #232732;
+    padding:                     10px 14px;
+}
+textbox {
+    background-color:            #232732;
+    text-color:                  #cdd6f4;
+    padding:                     10px 14px;
+}
