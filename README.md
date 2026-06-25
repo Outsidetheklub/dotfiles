@@ -21,7 +21,7 @@ My Arch Linux configs managed with GNU Stow.
 ### 1. Install packages
 
 ```bash
-sudo pacman -S stow paru yay i3-wm polybar rofi rofi-calc rofi-emoji kitty fish picom \
+sudo pacman -S stow paru yay thunar i3-wm polybar rofi rofi-calc rofi-emoji kitty fish picom \
   redshift flameshot feh polkit-gnome xorg-xrandr xorg-xinput \
   xorg-xsetroot sddm xsel ttf-meslo-nerd-font-powerlevel10k
 ```
