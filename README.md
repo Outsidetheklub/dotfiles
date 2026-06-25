@@ -7,13 +7,14 @@ My Arch Linux configs managed with GNU Stow.
 | Package | What it configures |
 |---------|-------------------|
 | `fish` | Fish shell + OpenClaw NPM path |
-| `i3` | Window manager config, keybinds, startup script |
+| `greenclip` | Clipboard history daemon + config |
+| `i3` | Window manager config, keybinds, startup script, mouse accel watchdog |
 | `kitty` | Terminal emulator |
-| `local-bin` | Custom scripts (power menu, mouse-to-focused) |
+| `local-bin` | Custom scripts (power menu, mouse-to-focused, clipboard rofi) |
 | `picom` | Compositor (transparency, blur, shadows) |
 | `polybar` | Status bar + scripts (volume, wifi, bluetooth, RAM) |
 | `redshift` | Night-time color temperature |
-| `rofi` | App launcher, emoji picker, calculator, power menu |
+| `rofi` | App launcher, emoji picker, calculator, clipboard history, power menu |
 
 ## Fresh install — what to do
 
@@ -22,7 +23,7 @@ My Arch Linux configs managed with GNU Stow.
 ```bash
 sudo pacman -S stow paru yay i3-wm polybar rofi rofi-calc rofi-emoji kitty fish picom \
   redshift flameshot feh polkit-gnome xorg-xrandr xorg-xinput \
-  xorg-xsetroot xsel ttf-meslo-nerd-font-powerlevel10k
+  xorg-xsetroot sddm xsel ttf-meslo-nerd-font-powerlevel10k
 ```
 
 ```bash
@@ -65,4 +66,15 @@ setxkbmap se
 reboot
 ```
 
-That's it. Everything else (display config, mouse accel fix, startup apps) is handled by `~/.config/i3/startup.sh`.
+## Keybinds (custom)
+
+| Key | Action |
+|-----|--------|
+| `$mod+space` | App launcher (rofi drun) |
+| `$mod+c` | Calculator (rofi calc mode) |
+| `$mod+v` | Clipboard history (greenclip + rofi) |
+| `$mod+Shift+v` | Delete clipboard history entry |
+| `$mod+period` | Emoji picker |
+| `$mod+Shift+s` | Screenshot (flameshot) |
+
+Everything else (display config, mouse accel fix, startup apps) is handled by `~/.config/i3/startup.sh`.
