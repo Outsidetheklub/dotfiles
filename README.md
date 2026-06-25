@@ -22,7 +22,7 @@ My Arch Linux configs managed with GNU Stow.
 ```bash
 sudo pacman -S stow i3-wm polybar rofi rofi-calc rofi-emoji kitty fish picom \
   redshift flameshot feh polkit-gnome xorg-xrandr xorg-xinput \
-  xorg-xsetroot ttf-meslo-nerd-font-powerlevel10k
+  xorg-xsetroot cliphist wl-clipboard ttf-meslo-nerd-font-powerlevel10k
 ```
 
 ### 2. Clone + stow
