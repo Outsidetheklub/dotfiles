@@ -47,6 +47,7 @@ for_window [class=".*"] border none
 
 # ── Launcher ────────────────────────────────────
 bindsym $mod+space exec rofi -show drun -theme ~/.config/rofi/drun.rasi
+bindsym $mod+c exec "pkill rofi || rofi -modi calc -show calc -theme ~/.config/rofi/calc.rasi"
 
 # ── Terminal ─────────────────────────────────────
 bindsym $mod+Return exec $terminal
