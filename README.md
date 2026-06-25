@@ -20,9 +20,13 @@ My Arch Linux configs managed with GNU Stow.
 ### 1. Install packages
 
 ```bash
-sudo pacman -S stow i3-wm polybar rofi rofi-calc rofi-emoji kitty fish picom \
+sudo pacman -S stow paru yay i3-wm polybar rofi rofi-calc rofi-emoji kitty fish picom \
   redshift flameshot feh polkit-gnome xorg-xrandr xorg-xinput \
-  xorg-xsetroot rofi-greenclip xsel ttf-meslo-nerd-font-powerlevel10k
+  xorg-xsetroot xsel ttf-meslo-nerd-font-powerlevel10k
+```
+
+```bash
+paru -S rofi-greenclip
 ```
 
 ### 2. Clone + stow
