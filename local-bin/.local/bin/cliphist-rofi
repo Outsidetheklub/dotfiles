@@ -1,0 +1,20 @@
+#!/bin/bash
+# Browse clipboard history with rofi + greenclip
+
+case $1 in
+    -d)
+        # Delete mode - show history, delete selected
+        selected=$(greenclip print | rofi -dmenu -p "Delete" -theme ~/.config/rofi/cliphist.rasi)
+        if [ -n "$selected" ]; then
+            # greenclip doesn't support single delete, so clear all
+            greenclip clear
+        fi
+        ;;
+    *)
+        # Normal mode - show history, copy selected
+        selected=$(greenclip print | rofi -dmenu -p "Clipboard" -theme ~/.config/rofi/cliphist.rasi)
+        if [ -n "$selected" ]; then
+            printf "%s" "$selected" | wl-copy 2>/dev/null || printf "%s" "$selected" | xsel -b 2>/dev/null
+        fi
+        ;;
+esac

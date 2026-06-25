@@ -20,6 +20,9 @@ xinput set-prop 12 "libinput Accel Profile Enabled" 0, 1, 0
 # Polkit authentication agent (so Thunar can ask for password to mount drives etc)
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
+# Clipboard history daemon (greenclip)
+greenclip daemon &
+
 # Flameshot (screenshot tool)
 flameshot &
 

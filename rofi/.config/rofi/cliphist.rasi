@@ -1,0 +1,67 @@
+* {
+    bg:                          #232732;
+    bg-alt:                      #3B4252;
+    fg:                          #cdd6f4;
+    fg-alt:                      #a6adc8;
+    blue:                        #89b4fa;
+    red:                         #f38ba8;
+    background-color:            #232732;
+    foreground:                  #cdd6f4;
+    border-color:                #3B4252;
+    separatorcolor:              #232732;
+    normal-background:           #232732;
+    normal-foreground:           #cdd6f4;
+    alternate-normal-background: #232732;
+    alternate-normal-foreground: #cdd6f4;
+    selected-normal-background:  #3B4252;
+    selected-normal-foreground:  #89b4fa;
+    scrollbar:                   false;
+}
+window {
+    background-color:            #232732;
+    border-radius:               0;
+    width:                       33%;
+    location:                    north east;
+    padding:                     0;
+}
+mainbox {
+    background-color:            #232732;
+    border:                      0;
+    padding:                     0;
+}
+inputbar {
+    background-color:            #232732;
+    padding:                     10px 14px;
+    spacing:                     10px;
+    children:                    [prompt, entry];
+}
+prompt {
+    text-color:                  #89b4fa;
+}
+entry {
+    text-color:                  #cdd6f4;
+    font:                        "MesloLGS Nerd Font 11";
+}
+listview {
+    background-color:            #232732;
+    padding:                     0;
+    spacing:                     0;
+    scrollbar:                   false;
+    fixed-height:                false;
+    columns:                     1;
+    lines:                       40;
+}
+element {
+    background-color:            #232732;
+    text-color:                  #cdd6f4;
+    padding:                     8px 14px;
+    border:                      0;
+}
+element selected {
+    background-color:            #3B4252;
+    text-color:                  #89b4fa;
+}
+element-text {
+    background-color:            transparent;
+    text-color:                  #cdd6f4;
+}
