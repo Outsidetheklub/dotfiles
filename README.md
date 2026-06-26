@@ -31,10 +31,6 @@ git clone https://aur.archlinux.org/paru.git
 ```
 
 ```bash
-git clone https://aur.archlinux.org/paru.git
-```
-
-```bash
 paru -S rofi-greenclip
 ```
 
