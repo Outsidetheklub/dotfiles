@@ -27,6 +27,14 @@ sudo pacman -S stow paru yay thunar i3-wm polybar rofi rofi-calc rofi-emoji kitt
 ```
 
 ```bash
+git clone https://aur.archlinux.org/paru.git
+```
+
+```bash
+git clone https://aur.archlinux.org/paru.git
+```
+
+```bash
 paru -S rofi-greenclip
 ```
 
