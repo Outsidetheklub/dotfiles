@@ -25,9 +25,7 @@ My Arch Linux configs managed with GNU Stow.
 #### Official repos
 
 ```bash
-sudo pacman -S stow thunar i3-wm polybar rofi rofi-calc rofi-emoji kitty fish picom \
-  redshift starship flameshot feh polkit-gnome xorg-xrandr xorg-xinput \
-  xorg-xsetroot sddm xsel ttf-meslo-nerd
+sudo pacman -S stow thunar i3-wm polybar rofi rofi-calc rofi-emoji fastfetch kitty fish picom redshift starship flameshot feh polkit-gnome xorg-xrandr xorg-xinput xorg-xsetroot sddm xsel ttf-meslo-nerd
 ```
 
 #### AUR (paru / yay)
