@@ -15,6 +15,8 @@ My Arch Linux configs managed with GNU Stow.
 | `polybar` | Status bar + scripts (volume, wifi, bluetooth, RAM) |
 | `redshift` | Night-time color temperature |
 | `rofi` | App launcher, emoji picker, calculator, clipboard history, power menu |
+| `fastfetch` | System info shown on terminal open |
+| `starship` | Custom prompt |
 
 ## Fresh install — what to do
 
