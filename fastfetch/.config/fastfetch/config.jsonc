@@ -4,7 +4,7 @@
     "display": {
         "separator": "  ",
         "color": "white",
-        "constants": ["\u001b[37m", "\u001b[38;5;16m", "\u001b[38;5;17m", "\u001b[38;5;18m"]
+        "constants": ["\u001b[37m", "\u001b[38;2;179;200;231m", "\u001b[38;2;191;199;212m", "\u001b[38;2;223;187;220m"]
     },
     "modules": [
         "break",
