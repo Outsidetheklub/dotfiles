@@ -28,13 +28,17 @@ sudo pacman -S stow thunar i3-wm polybar rofi rofi-calc rofi-emoji kitty fish pi
   xorg-xsetroot sddm xsel ttf-meslo-nerd
 ```
 
-#### AUR (paru)
+#### AUR (paru / yay)
 
 ```bash
 # Install paru
 sudo pacman -S --needed base-devel
 git clone https://aur.archlinux.org/paru.git /tmp/paru
 cd /tmp/paru && makepkg -si && cd ~
+
+# Install yay
+git clone https://aur.archlinux.org/yay.git /tmp/yay
+cd /tmp/yay && makepkg -si && cd ~
 
 # AUR packages
 paru -S rofi-greenclip ttf-meslo-nerd-font-powerlevel10k
