@@ -20,18 +20,24 @@ My Arch Linux configs managed with GNU Stow.
 
 ### 1. Install packages
 
-```bash
-sudo pacman -S stow paru yay thunar i3-wm polybar rofi rofi-calc rofi-emoji kitty fish picom \
-  redshift flameshot feh polkit-gnome xorg-xrandr xorg-xinput \
-  xorg-xsetroot sddm xsel ttf-meslo-nerd-font-powerlevel10k
-```
+#### Official repos
 
 ```bash
-git clone https://aur.archlinux.org/paru.git
+sudo pacman -S stow thunar i3-wm polybar rofi rofi-calc rofi-emoji kitty fish picom \
+  redshift starship flameshot feh polkit-gnome xorg-xrandr xorg-xinput \
+  xorg-xsetroot sddm xsel ttf-meslo-nerd
 ```
 
+#### AUR (paru)
+
 ```bash
-paru -S rofi-greenclip
+# Install paru
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/paru.git /tmp/paru
+cd /tmp/paru && makepkg -si && cd ~
+
+# AUR packages
+paru -S rofi-greenclip ttf-meslo-nerd-font-powerlevel10k
 ```
 
 ### 2. Clone + stow
