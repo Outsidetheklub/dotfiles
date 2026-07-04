@@ -4,7 +4,7 @@
 powered=$(bluetoothctl show | grep "Powered:" | awk '{print $2}')
 
 if [ "$powered" != "yes" ]; then
-    echo " off"
+    echo ""
     exit 0
 fi
 
@@ -16,5 +16,5 @@ if [ "$connected" -gt 0 ]; then
     name=$(bluetoothctl devices Connected | head -1 | cut -d ' ' -f 3-)
     echo " $name"
 else
-    echo " on"
+    echo ""
 fi
