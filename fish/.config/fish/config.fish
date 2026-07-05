@@ -39,6 +39,11 @@ if status is-interactive
     function mark_prompt_start --on-event fish_prompt
         echo -en "\e]133;A\e\\"
     end
+
+    # Run bash snippets without leaving fish
+    function doh
+        bash -c "$argv"
+    end
     
     # Custom fish config
     source ~/.config/caelestia/user-config.fish 2> /dev/null
