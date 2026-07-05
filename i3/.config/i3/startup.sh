@@ -11,7 +11,7 @@ sleep 0.5
 xrandr --output HDMI-0 --mode 1920x1080 --rate 60 --pos 1920x80
 
 # Set background across both monitors using fill mode
-feh --bg-fill $HOME/Pictures/Wallpapers/gregre.png 2>/dev/null || xsetroot -solid "#1e1e2e"
+feh --bg-fill $HOME/Pictures/Wallpapers/Wallpaper.png 2>/dev/null || xsetroot -solid "#1e1e2e"
 
 # Disable mouse acceleration
 xinput set-prop 12 "libinput Accel Speed" 0
