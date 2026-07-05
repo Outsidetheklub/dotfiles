@@ -17,6 +17,7 @@ My Arch Linux configs managed with GNU Stow.
 | `rofi` | App launcher, emoji picker, calculator, clipboard history, power menu |
 | `fastfetch` | System info shown on terminal open |
 | `starship` | Custom prompt |
+| `sddm` | SDDM config (stow with sudo to /) |
 
 ## Fresh install — what to do
 
@@ -50,6 +51,7 @@ paru -S rofi-greenclip ttf-meslo-nerd-font-powerlevel10k
 git clone <your-repo-url> ~/dotfiles
 cd ~/dotfiles
 stow */
+sudo stow -t / sddm    # SDDM config lives in /etc
 ```
 
 ### 3. Copy wallpaper
