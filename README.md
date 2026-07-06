@@ -90,7 +90,7 @@ reboot
 | `$mod+space` | App launcher (rofi drun) |
 | `$mod+c` | Calculator (rofi calc mode) |
 | `$mod+v` | Clipboard history (greenclip + rofi) |
-| `$mod+Shift+v` | Delete clipboard history entry |
+| `$mod+Shift+v` | Delete clipboard history entry (DOES NOT WORK CURRENTLY!!!!) |
 | `$mod+period` | Emoji picker |
 | `$mod+Shift+s` | Screenshot (flameshot) |
 
