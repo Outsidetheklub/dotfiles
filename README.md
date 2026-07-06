@@ -44,6 +44,9 @@ cd /tmp/yay && makepkg -si && cd ~
 
 # AUR packages
 paru -S rofi-greenclip ttf-meslo-nerd-font-powerlevel10k sddm-silent-theme
+
+# Set the Silent SDDM theme to catppuccin-macchiato preset
+sudo sed -i 's/^ConfigFile=.*/ConfigFile=configs\/catppuccin-macchiato.conf/' /usr/share/sddm/themes/silent/metadata.desktop
 ```
 
 ### 2. Clone + stow
