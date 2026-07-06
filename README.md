@@ -19,6 +19,7 @@ My Arch Linux configs managed with GNU Stow.
 | `starship` | Custom prompt |
 | `sddm` | SDDM config (stow with sudo to /) |
 | `fontconfig` | Emoji fallback font rules (stow with sudo to /) |
+| `wallpapers` | Desktop wallpaper (stow to ~) |
 
 ## Fresh install — what to do
 
@@ -53,16 +54,10 @@ cd ~/dotfiles
 stow */
 sudo stow -t / sddm         # SDDM config lives in /etc
 sudo stow -t / fontconfig   # Fontconfig rules (emoji fallback)
+stow -t ~ wallpapers       # Wallpaper → ~/Pictures/Wallpapers/
 ```
 
-### 3. Copy wallpaper
-
-```bash
-mkdir -p ~/Pictures/Wallpapers
-# Copy your wallpaper to ~/Pictures/Wallpapers/gregre.png
-```
-
-### 4. Create .xprofile (fixes ghost SDDM screen)
+### 3. Create .xprofile (fixes ghost SDDM screen)
 
 ```bash
 echo '#!/bin/sh
@@ -71,13 +66,13 @@ xsetroot -solid "#1e1e2e"' > ~/.xprofile
 chmod +x ~/.xprofile
 ```
 
-### 5. Set keyboard layout (if not in startup)
+### 4. Set keyboard layout (if not in startup)
 
 ```bash
 setxkbmap se
 ```
 
-### 6. Reboot
+### 5. Reboot
 
 ```bash
 reboot
