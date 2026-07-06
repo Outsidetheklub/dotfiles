@@ -3,35 +3,33 @@
 
 case $1 in
     -d)
-        # Delete mode - show history with indices, delete selected
+        # Delete an entry from clipboard history
         mapfile -t lines < <(greenclip print)
         [ "${#lines[@]}" -eq 0 ] && exit 0
 
-        # Show with line numbers
         entries=$(printf '%s\n' "${lines[@]}" | nl -w1 -s': ')
         selected=$(echo "$entries" | rofi -dmenu -p "Delete" -theme ~/.config/rofi/cliphist.rasi)
         [ -z "$selected" ] && exit 0
 
-        # Extract index from selection (1-based)
         idx="${selected%%:*}"
         [ "$idx" -le 0 ] || [ "$idx" -gt "${#lines[@]}" ] && exit 0
 
         greenclip clear
         sleep 0.2
 
-        # Re-add oldest → newest so order is preserved
+        # Re-add oldest → newest, convert NBSP back to real newlines
         for ((i = ${#lines[@]} - 1; i >= 0; i--)); do
             if [ "$i" -ne "$((idx - 1))" ]; then
-                printf "%s" "${lines[$i]}" | xsel -b -i 2>/dev/null
+                printf "%s" "${lines[$i]}" | sed 's/\xC2\xA0/\n/g' | xsel -b -i 2>/dev/null
                 sleep 0.05
             fi
         done
         ;;
     *)
-        # Normal mode - show history, copy selected
-        selected=$(greenclip print | rofi -dmenu -p "Clipboard" -theme ~/.config/rofi/cliphist.rasi)
+        selected=$(greenclip print 2>/dev/null | rofi -dmenu -p "Clipboard" -theme ~/.config/rofi/cliphist.rasi)
         if [ -n "$selected" ]; then
-            printf "%s" "$selected" | xsel -b 2>/dev/null
+            # Convert NBSP back to real newlines (greenclip print uses NBSP for \n)
+            printf "%s" "$selected" | sed 's/\xC2\xA0/\n/g' | xsel -b 2>/dev/null
         fi
         ;;
 esac
