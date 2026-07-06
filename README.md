@@ -27,7 +27,7 @@ My Arch Linux configs managed with GNU Stow.
 #### Official repos
 
 ```bash
-sudo pacman -S stow thunar i3-wm polybar rofi rofi-calc rofi-emoji fastfetch kitty fish picom redshift starship flameshot feh polkit-gnome xorg-xrandr xorg-xinput xorg-xsetroot sddm qt6-virtualkeyboard noto-fonts-emoji xsel ttf-meslo-nerd
+sudo pacman -S stow thunar i3-wm polybar rofi rofi-calc rofi-emoji fastfetch kitty fish picom redshift starship flameshot feh polkit-gnome xorg-xrandr xorg-xinput xorg-xsetroot sddm qt6-virtualkeyboard noto-fonts-emoji xsel ttf-meslo-nerd eza xdotool
 ```
 
 #### AUR (paru / yay)
@@ -37,10 +37,6 @@ sudo pacman -S stow thunar i3-wm polybar rofi rofi-calc rofi-emoji fastfetch kit
 sudo pacman -S --needed base-devel
 git clone https://aur.archlinux.org/paru.git /tmp/paru
 cd /tmp/paru && makepkg -si && cd ~
-
-# Install yay
-git clone https://aur.archlinux.org/yay.git /tmp/yay
-cd /tmp/yay && makepkg -si && cd ~
 
 # AUR packages
 paru -S rofi-greenclip ttf-meslo-nerd-font-powerlevel10k sddm-silent-theme
