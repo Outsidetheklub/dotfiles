@@ -18,6 +18,7 @@ My Arch Linux configs managed with GNU Stow.
 | `fastfetch` | System info shown on terminal open |
 | `starship` | Custom prompt |
 | `sddm` | SDDM config (stow with sudo to /) |
+| `fontconfig` | Emoji fallback font rules (stow with sudo to /) |
 
 ## Fresh install — what to do
 
@@ -26,7 +27,7 @@ My Arch Linux configs managed with GNU Stow.
 #### Official repos
 
 ```bash
-sudo pacman -S stow thunar i3-wm polybar rofi rofi-calc rofi-emoji fastfetch kitty fish picom redshift starship flameshot feh polkit-gnome xorg-xrandr xorg-xinput xorg-xsetroot sddm xsel ttf-meslo-nerd
+sudo pacman -S stow thunar i3-wm polybar rofi rofi-calc rofi-emoji fastfetch kitty fish picom redshift starship flameshot feh polkit-gnome xorg-xrandr xorg-xinput xorg-xsetroot sddm qt6-virtualkeyboard noto-fonts-emoji xsel ttf-meslo-nerd
 ```
 
 #### AUR (paru / yay)
@@ -42,7 +43,7 @@ git clone https://aur.archlinux.org/yay.git /tmp/yay
 cd /tmp/yay && makepkg -si && cd ~
 
 # AUR packages
-paru -S rofi-greenclip ttf-meslo-nerd-font-powerlevel10k
+paru -S rofi-greenclip ttf-meslo-nerd-font-powerlevel10k sddm-silent-theme
 ```
 
 ### 2. Clone + stow
@@ -51,7 +52,8 @@ paru -S rofi-greenclip ttf-meslo-nerd-font-powerlevel10k
 git clone <your-repo-url> ~/dotfiles
 cd ~/dotfiles
 stow */
-sudo stow -t / sddm    # SDDM config lives in /etc
+sudo stow -t / sddm         # SDDM config lives in /etc
+sudo stow -t / fontconfig   # Fontconfig rules (emoji fallback)
 ```
 
 ### 3. Copy wallpaper
