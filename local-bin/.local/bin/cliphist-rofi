@@ -4,18 +4,22 @@
 case $1 in
     -d)
         # Delete mode - show history with indices, delete selected
-        entries=$(greenclip print | nl -w1 -s': ')
-        [ -z "$entries" ] && exit 0
+        mapfile -t lines < <(greenclip print)
+        [ "${#lines[@]}" -eq 0 ] && exit 0
+
+        # Show with line numbers
+        entries=$(printf '%s\n' "${lines[@]}" | nl -w1 -s': ')
         selected=$(echo "$entries" | rofi -dmenu -p "Delete" -theme ~/.config/rofi/cliphist.rasi)
         [ -z "$selected" ] && exit 0
-        # Extract the index (1-based from nl)
+
+        # Extract index from selection (1-based)
         idx="${selected%%:*}"
-        # Grab all entries (most recent first)
-        mapfile -t lines < <(greenclip print)
+        [ "$idx" -le 0 ] || [ "$idx" -gt "${#lines[@]}" ] && exit 0
+
         greenclip clear
         sleep 0.2
-        # Re-add from oldest → newest so order is preserved
-        # (each xsel becomes the new most-recent entry)
+
+        # Re-add oldest → newest so order is preserved
         for ((i = ${#lines[@]} - 1; i >= 0; i--)); do
             if [ "$i" -ne "$((idx - 1))" ]; then
                 printf "%s" "${lines[$i]}" | xsel -b -i 2>/dev/null
