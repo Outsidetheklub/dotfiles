@@ -6,8 +6,16 @@ case $1 in
         # Delete mode - show history, delete selected
         selected=$(greenclip print | rofi -dmenu -p "Delete" -theme ~/.config/rofi/cliphist.rasi)
         if [ -n "$selected" ]; then
-            # greenclip doesn't support single delete, so clear all
+            # Build new history without the deleted entry
+            mapfile -t lines < <(greenclip print)
             greenclip clear
+            sleep 0.2
+            for line in "${lines[@]}"; do
+                if [ "$line" != "$selected" ]; then
+                    printf "%s" "$line" | xsel -b -i 2>/dev/null
+                    sleep 0.05
+                fi
+            done
         fi
         ;;
     *)
