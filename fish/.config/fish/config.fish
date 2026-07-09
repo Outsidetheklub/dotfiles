@@ -32,9 +32,6 @@ if status is-interactive
     abbr la 'ls -a'
     abbr lla 'ls -la'
 
-    # Caelestia colours (terminal palette)
-    cat ~/.local/state/caelestia/sequences.txt 2> /dev/null
-
     # For jumping between prompts in foot terminal
     function mark_prompt_start --on-event fish_prompt
         echo -en "\e]133;A\e\\"
@@ -45,6 +42,4 @@ if status is-interactive
         bash -c "$argv"
     end
     
-    # Custom fish config
-    source ~/.config/caelestia/user-config.fish 2> /dev/null
 end
