@@ -1,0 +1,46 @@
+/* Caelestia dark theme for Thunar
+ * Recreated 2026-08-20 — matches gtk.css palette
+ */
+@define-color bg        #1c2027;
+@define-color bg-alt    #232732;
+@define-color bg-hover  #2a2f3a;
+@define-color fg        #cdd6f4;
+@define-color accent    #87afd1;
+@define-color border    #3B4252;
+
+window.thunar { background-color: @bg; color: @fg; }
+
+window.thunar menubar {
+    background-color: @bg-alt;
+    color: @fg;
+}
+
+window.thunar toolbar, window.thunar .toolbar {
+    background-color: @bg-alt;
+    border-bottom: 1px solid @border;
+}
+window.thunar toolbar button {
+    background-color: @bg;
+    color: @fg;
+    border: 1px solid @border;
+    border-radius: 4px;
+}
+window.thunar toolbar button:hover { background-color: @bg-hover; }
+window.thunar toolbar button:checked { background-color: @accent; color: @bg; }
+
+window.thunar .sidebar { background-color: @bg-alt; }
+window.thunar .sidebar row { color: @fg; }
+window.thunar .sidebar row:selected { background-color: @accent; color: @bg; }
+
+window.thunar treeview, window.thunar .view {
+    background-color: @bg;
+    color: @fg;
+}
+window.thunar treeview:selected { background-color: @accent; color: @bg; }
+
+window.thunar statusbar {
+    background-color: @bg-alt;
+    color: @fg;
+}
+
+window.thunar paned > separator { background-color: @border; }
