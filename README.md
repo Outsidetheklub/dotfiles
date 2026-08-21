@@ -1,5 +1,5 @@
 # dotfiles
-test
+
 My Arch Linux configs managed with GNU Stow.
 
 ## What's inside
