@@ -49,7 +49,7 @@ sudo sed -i 's/^ConfigFile=.*/ConfigFile=configs\/catppuccin-macchiato.conf/' /u
 ### 2. Clone + stow
 
 ```bash
-git clone <https://github.com/Outsidetheklub/dotfiles.git> ~/dotfiles
+git clone https://github.com/Outsidetheklub/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 stow */
 sudo stow -t / sddm         # SDDM config lives in /etc
