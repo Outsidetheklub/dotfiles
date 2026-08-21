@@ -2,6 +2,7 @@
  * Recreated 2026-08-20 (original lost to git clean -df)
  * bg #1c2027 · accent #87afd1 · font MesloLGS Nerd Font 10
  */
+@import url("thunar.css");
 @define-color bg        #1c2027;
 @define-color bg-alt    #232732;
 @define-color bg-hover  #2a2f3a;
