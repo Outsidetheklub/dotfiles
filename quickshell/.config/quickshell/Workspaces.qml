@@ -33,7 +33,7 @@ Row {
                      : modelData.active ? Style.foreground
                      : Style.foregroundAlt
                 font.family: Style.fontFamily
-                font.pointSize: Style.fontSize
+                font.pointSize: Style.moduleFontSize
             }
 
             MouseArea {
