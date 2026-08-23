@@ -30,8 +30,7 @@ Row {
                 text: modelData.name
                 color: modelData.focused ? Style.background
                      : modelData.urgent ? Style.alert
-                     : modelData.active ? Style.foreground
-                     : Style.foregroundAlt
+                     : "#ffffff"
                 font.family: Style.fontFamily
                 font.pointSize: Style.moduleFontSize
             }
