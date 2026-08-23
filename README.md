@@ -10,6 +10,7 @@ My Arch Linux configs managed with GNU Stow.
 | `i3` | Window manager config, keybinds, startup script, mouse accel watchdog |
 | `kitty` | Terminal emulator |
 | `quickshell` | Bar + launcher + popups (clipboard, calc, emoji, power, wifi, bluetooth) |
+| `gtk` | GTK3/GTK4 dark theme (incl. Thunar) |
 | `local-bin` | Custom scripts (mouse-to-focused) |
 | `picom` | Compositor (transparency, blur, shadows) |
 | `redshift` | Night-time color temperature |
@@ -49,7 +50,7 @@ sudo sed -i 's/^ConfigFile=.*/ConfigFile=configs\/catppuccin-macchiato.conf/' /u
 ### 2. Clone + stow
 
 ```bash
-git clone <your-repo-url> ~/dotfiles
+git clone https://github.com/Outsidetheklub/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 stow */
 sudo stow -t / sddm         # SDDM config lives in /etc
