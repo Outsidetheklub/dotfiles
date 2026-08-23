@@ -11,6 +11,7 @@ Item {
     id: root
     implicitWidth: trayRow.childrenRect.width + 4
     height: parent.height
+    property var hostWindow: null  // set by Bar.qml (the XPanelWindow)
 
     Row {
         id: trayRow
@@ -47,7 +48,7 @@ Item {
                     acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
                     onClicked: (mouse) => {
                         if (mouse.button === Qt.RightButton) {
-                            modelData.display(root.Window.window, mouse.x, mouse.y)
+                            modelData.display(root.hostWindow, mouse.x, mouse.y)
                         } else if (mouse.button === Qt.MiddleButton) {
                             modelData.secondaryActivate()
                         } else {
