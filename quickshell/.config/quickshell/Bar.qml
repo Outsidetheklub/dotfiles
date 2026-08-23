@@ -61,6 +61,7 @@ XPanelWindow {
         Ram { height: parent.height }
         Network { height: parent.height }
         Battery { height: parent.height; screenInfo: root.screen }
+        Tray { height: parent.height; visible: root.isPrimary }
         Power { height: parent.height; screenInfo: root.screen }
     }
 }
