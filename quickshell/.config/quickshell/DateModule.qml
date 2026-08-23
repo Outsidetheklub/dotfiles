@@ -13,7 +13,7 @@ Item {
         id: label
         anchors.centerIn: parent
         text: root.display
-        color: Style.foreground
+        color: "#ffffff"
         font.family: Style.fontFamily
         font.pointSize: Style.moduleFontSize
     }
