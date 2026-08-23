@@ -48,7 +48,9 @@ Item {
                     acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
                     onClicked: (mouse) => {
                         if (mouse.button === Qt.RightButton) {
-                            modelData.display(root.hostWindow, mouse.x, mouse.y)
+                            // display() wants WINDOW-relative coords (it maps to global itself)
+                            const pos = trayArea.mapToItem(root.hostWindow.contentItem, mouse.x, mouse.y)
+                            modelData.display(root.hostWindow, pos.x, pos.y)
                         } else if (mouse.button === Qt.MiddleButton) {
                             modelData.secondaryActivate()
                         } else {
