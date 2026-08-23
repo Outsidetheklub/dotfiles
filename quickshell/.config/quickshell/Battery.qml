@@ -37,7 +37,7 @@ Item {
         text: root.iconGlyph + " " + root.capacity + "%"
         color: (root.capacity <= 20 && !root.charging) ? Style.alert : Style.foreground
         font.family: Style.fontFamily
-        font.pointSize: Style.fontSize
+        font.pointSize: Style.moduleFontSize
     }
 
     MouseArea {

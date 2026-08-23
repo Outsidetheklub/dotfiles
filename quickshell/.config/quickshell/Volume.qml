@@ -17,7 +17,7 @@ Item {
         text: root.text
         color: "#ffffff"
         font.family: Style.fontFamily
-        font.pointSize: Style.fontSize
+        font.pointSize: Style.moduleFontSize
     }
 
     Process {

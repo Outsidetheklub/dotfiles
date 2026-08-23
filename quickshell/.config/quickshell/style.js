@@ -14,5 +14,6 @@ var disabled = "#585b70"
 var barHeight = 28
 var fontFamily = "MesloLGS Nerd Font"
 var fontSize = 10
+var moduleFontSize = 12
 var titleFontSize = 11
 var smallFontSize = 9

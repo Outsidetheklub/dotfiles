@@ -15,7 +15,7 @@ Item {
         text: root.display
         color: Style.foreground
         font.family: Style.fontFamily
-        font.pointSize: Style.fontSize
+        font.pointSize: Style.moduleFontSize
     }
 
     Timer {
