@@ -2,6 +2,7 @@ import Quickshell
 import Quickshell.Services.SystemTray
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Window
 import "style.js" as Style
 
 // System tray — StatusNotifier (SNI) icons.
@@ -46,7 +47,7 @@ Item {
                     acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
                     onClicked: (mouse) => {
                         if (mouse.button === Qt.RightButton) {
-                            modelData.display(root, mouse.x, mouse.y)
+                            modelData.display(root.Window.window, mouse.x, mouse.y)
                         } else if (mouse.button === Qt.MiddleButton) {
                             modelData.secondaryActivate()
                         } else {
