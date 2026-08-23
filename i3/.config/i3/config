@@ -59,6 +59,7 @@ for_window [window_type="normal" title="^quickshell$"] move scratchpad
 
 # ── Launcher ────────────────────────────────────
 bindsym $mod+space exec qs ipc call launcher toggle
+bindsym $mod+b exec $browser
 bindsym $mod+c exec qs ipc call calc toggle
 
 # ── Terminal ─────────────────────────────────────
