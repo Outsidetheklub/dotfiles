@@ -53,6 +53,7 @@ for_window [title="Quickshell Emoji"] floating enable
 for_window [title="Quickshell Calc"] floating enable
 for_window [title="Quickshell WiFi"] floating enable
 for_window [title="Quickshell Bluetooth"] floating enable
+for_window [title="Quickshell TrayMenu"] floating enable
 # quickshell X11 creates an invisible overlay window (type=normal, title="quickshell")
 # that i3 tiles into view; hide it in the scratchpad
 for_window [window_type="normal" title="^quickshell$"] move scratchpad
