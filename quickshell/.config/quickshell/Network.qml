@@ -83,11 +83,17 @@ Item {
         }
 
         Rectangle {
+            id: wifiBg
             anchors.fill: parent
             color: Style.background
             radius: 8
             border.color: Style.disabled
             border.width: 1
+            focus: true
+            Keys.onUpPressed: list.currentIndex = Math.max(0, list.currentIndex - 1)
+            Keys.onDownPressed: list.currentIndex = Math.min(wifiPopup.networks.length - 1, list.currentIndex + 1)
+            Keys.onReturnPressed: wifiPopup.connectTo(list.currentIndex)
+            Keys.onEscapePressed: wifiPopup.visible = false
         }
 
         Text {
@@ -166,7 +172,11 @@ Item {
 
         function toggle() {
             wifiPopup.visible = !wifiPopup.visible
-            if (wifiPopup.visible) refresh()
+            if (wifiPopup.visible) {
+                refresh()
+                wifiBg.forceActiveFocus()
+                wifiPopup.requestActivate()
+            }
         }
 
         function refresh() {

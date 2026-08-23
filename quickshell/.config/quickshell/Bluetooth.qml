@@ -66,11 +66,17 @@ Item {
         property var found: []
 
         Rectangle {
+            id: btBg
             anchors.fill: parent
             color: Style.background
             radius: 8
             border.color: Style.disabled
             border.width: 1
+            focus: true
+            Keys.onUpPressed: devList.currentIndex = Math.max(0, devList.currentIndex - 1)
+            Keys.onDownPressed: devList.currentIndex = Math.min(btPopup.devices.length - 1, devList.currentIndex + 1)
+            Keys.onReturnPressed: btPopup.connectTo(devList.currentIndex)
+            Keys.onEscapePressed: btPopup.visible = false
         }
 
         // header: title + power toggle
@@ -235,6 +241,8 @@ Item {
                 btPopup.run(["bluetoothctl", "agent", "on"])
                 btPopup.run(["bluetoothctl", "default-agent"])
                 refresh()
+                btBg.forceActiveFocus()
+                btPopup.requestActivate()
             }
         }
 

@@ -74,6 +74,9 @@ RealWindow.Window {
             font.family: Style.fontFamily
             font.pointSize: Style.fontSize
             selectByMouse: true
+            Keys.onDownPressed: grid.forceActiveFocus()
+            Keys.onReturnPressed: root.copyEmoji(grid.currentIndex)
+            Keys.onEscapePressed: root.visible = false
             onTextChanged: { root.query = text; root.updateFilter() }
         }
     }
@@ -91,6 +94,15 @@ RealWindow.Window {
         cellHeight: 44
         model: root.filtered
         clip: true
+        keyNavigationEnabled: true
+        Keys.onReturnPressed: root.copyEmoji(grid.currentIndex)
+        Keys.onEscapePressed: root.visible = false
+        Keys.onPressed: (event) => {
+            // typing while in the grid: bounce back to search
+            if (event.text.length === 1 && !(event.modifiers & Qt.ControlModifier)) {
+                searchInput.forceActiveFocus()
+            }
+        }
 
         delegate: Rectangle {
             required property var modelData
@@ -164,6 +176,7 @@ RealWindow.Window {
             grid.currentIndex = 0
             moveTimer.start()
             initTimer.start()
+            root.requestActivate()
         }
     }
 

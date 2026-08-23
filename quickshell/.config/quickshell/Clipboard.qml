@@ -20,11 +20,17 @@ RealWindow.Window {
 
     // opaque background (quickshell windows are transparent)
     Rectangle {
+        id: bg
         anchors.fill: parent
         color: Style.background
         radius: 8
         border.color: Style.disabled
         border.width: 1
+        focus: true
+        Keys.onUpPressed: list.currentIndex = Math.max(0, list.currentIndex - 1)
+        Keys.onDownPressed: list.currentIndex = Math.min(root.entries.length - 1, list.currentIndex + 1)
+        Keys.onReturnPressed: root.deleteMode ? root.deleteEntry(list.currentIndex) : root.copyEntry(list.currentIndex)
+        Keys.onEscapePressed: root.visible = false
     }
 
     Text {
@@ -144,6 +150,8 @@ RealWindow.Window {
             root.visible = true
             loadTimer.start()
             moveTimer.start()
+            bg.forceActiveFocus()
+            root.requestActivate()
         }
     }
 
@@ -155,6 +163,8 @@ RealWindow.Window {
             root.y = Style.barHeight + 4
             loadTimer.start()
             moveTimer.start()
+            bg.forceActiveFocus()
+            root.requestActivate()
         }
     }
 
