@@ -22,7 +22,7 @@ exec_always --no-startup-id xsetroot -solid "#1e1e2e"
 exec_always --no-startup-id picom -b
 exec_always --no-startup-id $HOME/.config/i3/startup.sh
 exec_always --no-startup-id $HOME/.config/i3/mouse-watch.sh
-exec_always --no-startup-id sleep 2 && quickshell -n -p $HOME/.config/quickshell
+exec_always --no-startup-id sleep 2 && QT_QPA_PLATFORMTHEME=gtk3 quickshell -n -p $HOME/.config/quickshell
 #exec_always --no-startup-id dunst  # replaced by quickshell notifications
 # nm-applet removed — clicking WiFi module replaces it
 exec_always --no-startup-id redshift -l 59.33:18.07 &
@@ -53,7 +53,6 @@ for_window [title="Quickshell Emoji"] floating enable
 for_window [title="Quickshell Calc"] floating enable
 for_window [title="Quickshell WiFi"] floating enable
 for_window [title="Quickshell Bluetooth"] floating enable
-for_window [title="Quickshell TrayMenu"] floating enable
 # quickshell X11 creates an invisible overlay window (type=normal, title="quickshell")
 # that i3 tiles into view; hide it in the scratchpad
 for_window [window_type="normal" title="^quickshell$"] move scratchpad
