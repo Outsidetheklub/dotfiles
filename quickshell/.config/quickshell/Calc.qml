@@ -17,11 +17,30 @@ RealWindow.Window {
     color: Style.background
 
     Rectangle {
+        id: bg
         anchors.fill: parent
         color: Style.background
         radius: 8
         border.color: Style.disabled
         border.width: 1
+        focus: true
+        Keys.onPressed: (event) => {
+            if (event.modifiers & (Qt.ControlModifier | Qt.AltModifier | Qt.MetaModifier)) return
+            const t = event.text
+            if (t.length === 1 && t >= "0" && t <= "9") { root.handle("d" + t); event.accepted = true; return }
+            switch (event.key) {
+            case Qt.Key_Return: case Qt.Key_Enter: root.handle("eq"); event.accepted = true; break
+            case Qt.Key_Backspace: root.handle("back"); event.accepted = true; break
+            case Qt.Key_Escape: root.visible = false; event.accepted = true; break
+            case Qt.Key_C: root.handle("clear"); event.accepted = true; break
+            case Qt.Key_Plus: root.handle("add"); event.accepted = true; break
+            case Qt.Key_Minus: root.handle("sub"); event.accepted = true; break
+            case Qt.Key_Asterisk: root.handle("mul"); event.accepted = true; break
+            case Qt.Key_Slash: root.handle("div"); event.accepted = true; break
+            case Qt.Key_Period: case Qt.Key_Comma: root.handle("dot"); event.accepted = true; break
+            case Qt.Key_Percent: root.handle("pct"); event.accepted = true; break
+            }
+        }
     }
 
     // display
@@ -74,13 +93,13 @@ RealWindow.Window {
                 width: (root.width - 20 - 18) / 4
                 height: 48
                 radius: 6
-                color: modelData.color !== undefined ? (index === calcGrid.currentIndex ? Style.background : modelData.color + "40")
-                     : (index === calcGrid.currentIndex ? Style.primary : Style.backgroundAlt)
+                color: modelData.color !== undefined ? (index === root.currentIndex ? Style.background : modelData.color + "40")
+                     : (index === root.currentIndex ? Style.primary : Style.backgroundAlt)
 
                 Text {
                     anchors.centerIn: parent
                     text: modelData.label
-                    color: modelData.color !== undefined && index !== calcGrid.currentIndex ? modelData.color : Style.foreground
+                    color: modelData.color !== undefined && index !== root.currentIndex ? modelData.color : Style.foreground
                     font.family: Style.fontFamily
                     font.pointSize: 16
                 }
@@ -88,7 +107,7 @@ RealWindow.Window {
                 MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
-                    onEntered: calcGrid.currentIndex = index
+                    onEntered: root.currentIndex = index
                     onClicked: root.handle(modelData.fn)
                 }
             }
@@ -96,6 +115,7 @@ RealWindow.Window {
     }
 
     property int gridIndex: 0
+    property int currentIndex: 0
     property string display: "0"
     property double acc: 0
     property string pendingOp: ""
@@ -142,6 +162,8 @@ RealWindow.Window {
             root.acc = 0
             root.pendingOp = ""
             root.fresh = true
+            bg.forceActiveFocus()
+            root.requestActivate()
         }
     }
 

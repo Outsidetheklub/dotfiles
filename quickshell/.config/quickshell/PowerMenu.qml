@@ -19,11 +19,23 @@ RealWindow.Window {
 
     // opaque background (quickshell windows are transparent)
     Rectangle {
+        id: bg
         anchors.fill: parent
         color: Style.backgroundAlt
         radius: 8
         border.color: Style.disabled
         border.width: 1
+        focus: true
+        Keys.onUpPressed: root.currentIndex = (root.currentIndex + 4) % 5
+        Keys.onDownPressed: root.currentIndex = (root.currentIndex + 1) % 5
+        Keys.onReturnPressed: {
+            const item = rep.model[root.currentIndex]
+            if (item) {
+                root.run(["sh", "-c", item.cmd])
+                root.visible = false
+            }
+        }
+        Keys.onEscapePressed: root.visible = false
     }
 
     property int currentIndex: 0
@@ -34,6 +46,7 @@ RealWindow.Window {
         spacing: 2
 
         Repeater {
+            id: rep
             model: [
                 { icon: "\uf2dc", label: " Shutdown", cmd: "systemctl poweroff" },
                 { icon: "\uf021", label: " Reboot", cmd: "systemctl reboot" },
@@ -94,6 +107,8 @@ RealWindow.Window {
             root.y = top + Style.barHeight + 4
             root.currentIndex = 0
             moveTimer.start()
+            bg.forceActiveFocus()
+            root.requestActivate()
         }
     }
 
