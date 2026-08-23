@@ -13,8 +13,8 @@ font pango:MesloLGS Nerd Font 11
 
 # ── Swedish keyboard ─────────────────────────────
 exec_always --no-startup-id setxkbmap se
-exec_always --no-startup-id xinput set-prop 13 "libinput Accel Speed" 0
-exec_always --no-startup-id xinput set-prop 13 "libinput Accel Profile Enabled" 0, 1, 0
+# mouse accel now handled by /etc/X11/xorg.conf.d/99-mouse-noaccel.conf (xinput lines removed)
+# (removed — see 99-mouse-noaccel.conf)
 
 # ── Autostart ────────────────────────────────────
 # Clear ghost SDDM screen
@@ -22,8 +22,8 @@ exec_always --no-startup-id xsetroot -solid "#1e1e2e"
 exec_always --no-startup-id picom -b
 exec_always --no-startup-id $HOME/.config/i3/startup.sh
 exec_always --no-startup-id $HOME/.config/i3/mouse-watch.sh
-exec_always --no-startup-id sleep 3 && $HOME/.config/polybar/launch.sh
-exec_always --no-startup-id dunst
+exec_always --no-startup-id sleep 2 && quickshell -n -p $HOME/.config/quickshell
+#exec_always --no-startup-id dunst  # replaced by quickshell notifications
 # nm-applet removed — clicking WiFi module replaces it
 exec_always --no-startup-id redshift -l 59.33:18.07 &
 
@@ -44,10 +44,22 @@ default_border none
 new_window none
 new_float none
 for_window [class=".*"] border none
+for_window [title="Quickshell Launcher"] floating enable, move position 0 0
+for_window [title="Quickshell Power"] floating enable
+for_window [title="Quickshell Notifications"] floating enable
+for_window [title="Quickshell Root"] floating enable
+for_window [title="Quickshell Clipboard"] floating enable
+for_window [title="Quickshell Emoji"] floating enable
+for_window [title="Quickshell Calc"] floating enable
+for_window [title="Quickshell WiFi"] floating enable
+for_window [title="Quickshell Bluetooth"] floating enable
+# quickshell X11 creates an invisible overlay window (type=normal, title="quickshell")
+# that i3 tiles into view; hide it in the scratchpad
+for_window [window_type="normal" title="^quickshell$"] move scratchpad
 
 # ── Launcher ────────────────────────────────────
-bindsym $mod+space exec rofi -show drun -theme ~/.config/rofi/drun.rasi
-bindsym $mod+c exec "pkill rofi || rofi -modi calc -show calc -theme ~/.config/rofi/calc.rasi"
+bindsym $mod+space exec qs ipc call launcher toggle
+bindsym $mod+c exec qs ipc call calc toggle
 
 # ── Terminal ─────────────────────────────────────
 bindsym $mod+Return exec $terminal
@@ -150,9 +162,12 @@ bindsym Print exec flameshot full
 bindsym $mod+Shift+s exec flameshot gui
 
 # ── Clipboard / Emoji ──────────────────────────
-bindsym $mod+v exec pkill rofi || ~/.local/bin/cliphist-rofi
-bindsym $mod+Shift+v exec pkill rofi || ~/.local/bin/cliphist-rofi -d
-bindsym $mod+period exec "pkill rofi || rofi -modi emoji -show emoji -theme ~/.config/rofi/emoji.rasi"
+bindsym $mod+v exec qs ipc call clipboard toggle
+bindsym $mod+Shift+v exec qs ipc call clipboard deleteMode
+bindsym $mod+period exec qs ipc call emoji toggle
+
+# ── Apple Music (Cider) ──────────────────────────
+bindsym $mod+m exec --no-startup-id cider
 
 # ── Reload / restart / exit ────────────────────
 bindsym $mod+Shift+c reload
@@ -160,6 +175,6 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec i3-msg exit
 
 # ── Power menu ────────────────────────────────
-bindsym $mod+Escape exec ~/.local/bin/power-menu.sh
+bindsym $mod+Escape exec qs ipc call power toggle
 
 
