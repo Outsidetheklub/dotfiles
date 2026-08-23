@@ -94,5 +94,5 @@ reboot
 | `$mod+Shift+s` | Screenshot area (flameshot) |
 | `$mod+minus` | Scratchpad show |
 | `$mod+Shift+minus` | Move window to scratchpad |
-
+| `$mod+b` | Opens Browser (Configured to Brave-origin-beta) |
 Everything else (display config, mouse accel fix, startup apps) is handled by `~/.config/i3/startup.sh`.
