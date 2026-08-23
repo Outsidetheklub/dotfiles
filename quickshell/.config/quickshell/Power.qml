@@ -16,7 +16,7 @@ Item {
         text: "\uf011" // power icon
         color: "#ffffff"
         font.family: Style.fontFamily
-        font.pointSize: Style.fontSize
+        font.pointSize: Style.moduleFontSize
     }
 
     Process { id: runner }
