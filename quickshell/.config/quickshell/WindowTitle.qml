@@ -17,7 +17,7 @@ Item {
         text: root.title
         color: Style.foregroundAlt
         font.family: Style.fontFamily
-        font.pointSize: Style.titleFontSize
+        font.pointSize: Style.moduleFontSize
         elide: Text.ElideRight
         width: Math.min(implicitWidth, 420)
         anchors.verticalCenter: parent.verticalCenter
