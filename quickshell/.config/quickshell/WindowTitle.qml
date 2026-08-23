@@ -15,7 +15,7 @@ Item {
     Text {
         id: titleLabel
         text: root.title
-        color: Style.foregroundAlt
+        color: "#ffffff"
         font.family: Style.fontFamily
         font.pointSize: Style.moduleFontSize
         elide: Text.ElideRight
