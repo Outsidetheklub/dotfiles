@@ -10,11 +10,12 @@ import "."
 Bar {
     screen: Quickshell.screens[0]
 
-    // bars for the remaining screens
+    // bars for the remaining screens (screen 0 is the primary bar above;
+    // skip it here — a hidden duplicate bar would double every module,
+    // its popups and IPC handlers)
     Instantiator {
-        model: Quickshell.screens
+        model: Quickshell.screens.filter(s => s.x !== 0)
         delegate: Bar {
-            visible: modelData.x !== 0
             screen: modelData
         }
     }

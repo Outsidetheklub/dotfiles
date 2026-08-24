@@ -2,6 +2,9 @@
 # Clipboard history watcher: feed X11 CLIPBOARD into cliphist
 # Replaces `greenclip daemon` — Clipboard.qml reads the store via `cliphist list`.
 
+# Only one watcher per session: startup.sh re-runs on every i3 restart.
+[ "$(pgrep -fc 'cliphist-watch\.sh')" -gt 1 ] && exit 0
+
 last=""
 while true; do
     cur=$(xsel -o -b 2>/dev/null | tr -d '\000')

@@ -95,29 +95,39 @@ RealWindow.Window {
         root.showAt(Screen.width, 0)
     }
 
-    // IPC entry with the screen's right edge + top (used by the bar power buttons)
+    // IPC entry with the module's right edge + top (used by the bar power buttons)
     function toggleAt(rightEdge: string, screenTop: string): void {
         root.showAt(parseInt(rightEdge), parseInt(screenTop))
     }
 
     function showAt(edge, top) {
-        root.visible = !root.visible
         if (root.visible) {
-            root.x = edge - root.width - 4
-            root.y = top + Style.barHeight + 4
-            root.currentIndex = 0
-            moveTimer.start()
-            bg.forceActiveFocus()
-            root.requestActivate()
+            root.visible = false
+            moveTimer.stop()
+            return
         }
+        // position BEFORE mapping: i3 honors the requested position for
+        // floating windows, but ignores position changes made after map
+        root.x = edge - root.width - 4
+        root.y = top + Style.barHeight + 4
+        root.currentIndex = 0
+        root.visible = true
+        moveTimer.tries = 0
+        moveTimer.start()
+        bg.forceActiveFocus()
+        root.requestActivate()
     }
 
+    // i3 can still race us at map time (the window isn't in its tree yet),
+    // so keep nudging it into place for a few hundred ms until it sticks
     Timer {
         id: moveTimer
         interval: 50
+        repeat: true
+        property int tries: 0
         onTriggered: {
-            const edge = root.x + root.width + 4
             root.run(["i3-msg", "[title=\"Quickshell Power\"]", "move", "position", String(root.x), String(root.y)])
+            if (++moveTimer.tries >= 8) moveTimer.stop()
         }
     }
 

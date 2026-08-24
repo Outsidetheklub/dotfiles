@@ -156,15 +156,33 @@ RealWindow.Window {
     }
 
     function toggle() {
-        root.visible = !root.visible
         if (root.visible) {
-            root.display = "0"
-            root.acc = 0
-            root.pendingOp = ""
-            root.fresh = true
-            bg.forceActiveFocus()
-            root.requestActivate()
+            root.visible = false
+            return
         }
+        // top-right below the bar, BEFORE mapping (was hardcoded 1920px)
+        root.x = Screen.width - root.width - 4
+        root.y = Style.barHeight + 4
+        root.visible = true
+        root.display = "0"
+        root.acc = 0
+        root.pendingOp = ""
+        root.fresh = true
+        bg.forceActiveFocus()
+        root.requestActivate()
+        moveTimer.start()
+    }
+
+    Process { id: runner }
+    function run(cmd) {
+        runner.command = cmd
+        runner.startDetached()
+    }
+
+    Timer {
+        id: moveTimer
+        interval: 50
+        onTriggered: root.run(["i3-msg", "[title=\"Quickshell Calc\"]", "move", "position", String(root.x), String(root.y)])
     }
 
     IpcHandler {

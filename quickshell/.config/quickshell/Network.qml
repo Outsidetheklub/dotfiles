@@ -310,12 +310,25 @@ Item {
         }
 
         function toggle() {
-            wifiPopup.visible = !wifiPopup.visible
             if (wifiPopup.visible) {
-                refresh()
-                wifiBg.forceActiveFocus()
-                wifiPopup.requestActivate()
+                wifiPopup.visible = false
+                return
             }
+            // position under the module BEFORE mapping (root.x is row-relative)
+            const g = root.mapToGlobal(root.width, 0)
+            wifiPopup.x = g.x - wifiPopup.width - 4
+            wifiPopup.y = g.y + Style.barHeight + 4
+            wifiPopup.visible = true
+            refresh()
+            wifiBg.forceActiveFocus()
+            wifiPopup.requestActivate()
+            moveTimer.start()
+        }
+
+        Timer {
+            id: moveTimer
+            interval: 50
+            onTriggered: root.run(["i3-msg", "[title=\"Quickshell WiFi\"]", "move", "position", String(wifiPopup.x), String(wifiPopup.y)])
         }
 
         function refresh() {
