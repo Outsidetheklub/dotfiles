@@ -72,6 +72,10 @@ Item {
         property var networks: []
         property var lastScan: []
         property string currentSsid: ""
+        property string prevSsid: ""
+
+        // shell single-quote escaping (safe for passwords with $, `, ", etc.)
+        function sq(s) { return "'" + String(s).replace(/'/g, "'\\''") + "'" }
 
         function applyList() {
             const arr = wifiPopup.lastScan.slice()
@@ -170,6 +174,141 @@ Item {
             }
         }
 
+        // ── password prompt (overlay, bottom of popup) ─────────────────
+        Rectangle {
+            id: passPrompt
+            visible: false
+            z: 10
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.margins: 8
+            height: 64
+            radius: 6
+            color: Style.backgroundAlt
+            border.color: Style.alert
+            border.width: 1
+
+            property string targetSsid: ""
+
+            onVisibleChanged: if (visible) { passField.text = ""; passField.forceActiveFocus() }
+
+            Text {
+                id: passLabel
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: cancelBtn.left
+                anchors.margins: 8
+                text: "Password for " + passPrompt.targetSsid
+                color: Style.foreground
+                font.family: Style.fontFamily
+                font.pointSize: 10
+                elide: Text.ElideRight
+            }
+
+            Text {
+                id: cancelBtn
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.margins: 6
+                text: "\uf00d"
+                color: Style.foregroundAlt
+                font.family: Style.fontFamily
+                font.pointSize: 10
+                MouseArea {
+                    anchors.fill: parent
+                    anchors.margins: -4
+                    onClicked: passPrompt.cancel()
+                }
+            }
+
+            // visible input box (so it's obvious where to type)
+            Rectangle {
+                id: passBox
+                anchors.left: parent.left
+                anchors.leftMargin: 8
+                anchors.right: connectBtn.left
+                anchors.rightMargin: 8
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 6
+                height: 26
+                radius: 4
+                color: Style.background
+                border.color: Style.disabled
+                border.width: 1
+
+                TextInput {
+                    id: passField
+                    anchors.fill: parent
+                    anchors.leftMargin: 8
+                    anchors.rightMargin: 8
+                    verticalAlignment: Text.AlignVCenter
+                    color: Style.primary
+                    selectionColor: Style.primary
+                    selectedTextColor: Style.background
+                    font.family: Style.fontFamily
+                    font.pointSize: 11
+                    echoMode: TextInput.Password
+                    selectByMouse: true
+                    clip: true
+
+                    Text {
+                        anchors.fill: parent
+                        text: "Type password, press Enter"
+                        color: Style.foregroundAlt
+                        font.family: Style.fontFamily
+                        font.pointSize: 9
+                        verticalAlignment: Text.AlignVCenter
+                        visible: parent.text === ""
+                        elide: Text.ElideRight
+                    }
+
+                    Keys.onReturnPressed: passPrompt.submit()
+                    Keys.onEscapePressed: passPrompt.cancel()
+                }
+            }
+
+            Rectangle {
+                id: connectBtn
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 6
+                anchors.margins: 8
+                width: 74
+                height: 26
+                radius: 4
+                color: Style.primary
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "Connect"
+                    color: Style.background
+                    font.family: Style.fontFamily
+                    font.pointSize: 10
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: passPrompt.submit()
+                }
+            }
+
+            function submit() {
+                const pw = passField.text
+                if (pw === "") return // empty = keep prompt open, don't retry without password
+                const ssid = passPrompt.targetSsid
+                passPrompt.visible = false
+                wifiPopup.runConnect(ssid, pw)
+            }
+            function cancel() {
+                passPrompt.visible = false
+                if (wifiPopup.prevSsid !== "" && wifiPopup.prevSsid !== passPrompt.targetSsid) {
+                    // cancelled the switch → make sure the old network is back
+                    root.run(["sh", "-c", "nmcli connection up " + wifiPopup.sq(wifiPopup.prevSsid) + " 2>/dev/null; true"])
+                }
+                wifiBg.forceActiveFocus()
+            }
+        }
+
         function toggle() {
             wifiPopup.visible = !wifiPopup.visible
             if (wifiPopup.visible) {
@@ -224,21 +363,52 @@ Item {
         function connectTo(index) {
             const net = wifiPopup.networks[index]
             if (!net) return
+            passPrompt.visible = false
             if (net.disconnect) {
                 wifiPopup.disconnect()
                 return
             }
+            // remember what we're on, so a failed switch can restore it
+            wifiPopup.prevSsid = wifiPopup.currentSsid
+            // try without password first (saved networks connect instantly);
+            // if NM says a secret is required, runConnect() will show the prompt
+            wifiPopup.runConnect(net.ssid, "")
+        }
+
+        function runConnect(ssid, password) {
             wifiPopup.visible = false
             const proc = Qt.createQmlObject('import Quickshell.Io; Process {}', wifiPopup, "wifiConn")
             const col = Qt.createQmlObject('import Quickshell.Io; StdioCollector { waitForEnd: true }', proc, "wifiConnCol")
             proc.stdout = col
-            proc.command = ["sh", "-c", "nmcli -w 20 device wifi connect " + JSON.stringify(net.ssid) + " 2>&1"]
+            const passArg = password === "" ? "" : " password " + wifiPopup.sq(password)
+            proc.command = ["sh", "-c", "nmcli -w 20 device wifi connect " + wifiPopup.sq(ssid) + passArg + " 2>&1"]
             col.streamFinished.connect(() => {
                 const out = col.text.trim()
                 if (out.indexOf("successfully activated") !== -1) {
-                    root.run(["notify-send", "WiFi", "Connected to " + net.ssid])
+                    if (password !== "") {
+                        // persist secret to the profile file (psk-flags 0) so
+                        // boot auto-connect works without a keyring/agent
+                        root.run(["sh", "-c", "nmcli connection modify " + wifiPopup.sq(ssid) + " 802-11-wireless-security.psk-flags 0 2>/dev/null; true"])
+                    }
+                    root.run(["notify-send", "WiFi", "Connected to " + ssid])
+                    wifiPopup.currentSsid = ssid
+                    wifiPopup.applyList()
+                    proc.running = true // refresh the bar module text
+                } else if (password === "" && /secrets were required|no secrets|password|authentication/i.test(out)) {
+                    // network demands a password → show the prompt
+                    passPrompt.targetSsid = ssid
+                    passPrompt.visible = true
+                    wifiPopup.visible = true
+                    wifiPopup.requestActivate()
+                    passField.forceActiveFocus()
                 } else {
-                    root.run(["notify-send", "WiFi", "Failed: " + (out || "unknown error")])
+                    if (wifiPopup.prevSsid !== "" && wifiPopup.prevSsid !== ssid) {
+                        // switching failed → bring the old network back
+                        root.run(["sh", "-c", "nmcli connection up " + wifiPopup.sq(wifiPopup.prevSsid) + " 2>/dev/null; true"])
+                        root.run(["notify-send", "WiFi", "Couldn't connect to " + ssid + ", restored " + wifiPopup.prevSsid])
+                    } else {
+                        root.run(["notify-send", "WiFi", "Failed: " + (out || "unknown error")])
+                    }
                 }
                 col.destroy()
                 proc.destroy()
