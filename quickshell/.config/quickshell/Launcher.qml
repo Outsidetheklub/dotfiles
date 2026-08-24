@@ -43,6 +43,7 @@ RealWindow.Window {
             searchInput.text = ""
             root.query = ""
             root.updateFilter()
+            loader.running = true // re-scan .desktop files every open (new installs appear)
             searchInput.forceActiveFocus()
             // i3 centers floating windows on map; snap to the left edge after
             moveTimer.start()
