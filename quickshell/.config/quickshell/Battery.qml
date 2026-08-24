@@ -2,6 +2,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.X11
 import QtQuick
+import QtQuick.Window as RealWindow
 import "style.js" as Style
 
 // Battery module. Completely hidden when no battery is present (desktop).
@@ -43,14 +44,17 @@ Item {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            root.popupOpen = !root.popupOpen
-            if (root.popupOpen) root.refresh()
+            if (!root.hasBattery) return
+            root.refresh()
+            popup.toggle()
         }
     }
 
     // ── detection + polling ────────────────────────────────────────────
+    // 5s poll as fallback; the udev watcher below handles plug/unplug
+    // and capacity changes instantly.
     Timer {
-        interval: 30000
+        interval: 5000
         repeat: true
         running: true
         onTriggered: root.refresh()
@@ -58,7 +62,7 @@ Item {
 
     function refresh() {
         detectProc.running = true
-        if (root.hasBattery) readProc.running = true
+        root.readBattery()
         ppdProc.running = true
     }
 
@@ -73,17 +77,18 @@ Item {
                 const name = text.trim()
                 root.hasBattery = name.length > 0
                 root.batteryName = name
+                // read immediately once we know the device name, otherwise
+                // the module shows 0% from boot until the first timer tick
+                if (root.hasBattery) root.readBattery()
             }
         }
     }
 
-    // read capacity + status
+    // read capacity + status. The command is built per-run in readBattery():
+    // batteryName is only known after async detection, so a static binding
+    // would read /sys/class/power_supply//capacity (empty) at boot → 0%.
     Process {
         id: readProc
-        command: ["sh", "-c",
-            "cat /sys/class/power_supply/" + root.batteryName +
-            "/capacity /sys/class/power_supply/" + root.batteryName +
-            "/status 2>/dev/null"]
         stdout: StdioCollector {
             waitForEnd: true
             onStreamFinished: () => {
@@ -92,6 +97,15 @@ Item {
                 root.charging = (lines[1] || "").indexOf("Charg") === 0
             }
         }
+    }
+
+    function readBattery() {
+        if (!root.batteryName) return
+        readProc.command = ["sh", "-c",
+            "cat /sys/class/power_supply/" + root.batteryName +
+            "/capacity /sys/class/power_supply/" + root.batteryName +
+            "/status 2>/dev/null"]
+        readProc.running = true
     }
 
     // power-profiles-daemon availability + current mode
@@ -111,6 +125,37 @@ Item {
 
     Process { id: setProc }
 
+    Process { id: runner }
+    function run(cmd) {
+        runner.command = cmd
+        runner.startDetached()
+    }
+
+    // ── instant charger/status events ──────────────────────────────────
+    // udevadm monitor blocks until a power_supply uevent (plug/unplug,
+    // charge status or capacity change); grep -m1 exits on the first
+    // battery/AC event and onStreamFinished re-arms the watcher.
+    Process {
+        id: ueventProc
+        command: ["sh", "-c",
+            "udevadm monitor --subsystem-match=power_supply 2>/dev/null | grep -m1 -E 'power_supply/(BAT|AC)'"]
+        running: true
+        stdout: StdioCollector {
+            waitForEnd: true
+            onStreamFinished: () => {
+                root.readBattery()
+                rearmTimer.start()
+            }
+        }
+    }
+
+    // re-arm guard: keeps us from busy-looping if udevadm is unavailable
+    Timer {
+        id: rearmTimer
+        interval: 1500
+        onTriggered: ueventProc.running = true
+    }
+
     function setMode(mode) {
         setProc.command = ["powerprofilesctl", "set", mode]
         setProc.running = true
@@ -118,23 +163,37 @@ Item {
     }
 
     // ── power mode popup ───────────────────────────────────────────────
-    XPanelWindow {
+    // A RealWindow + i3 floating rule (same pattern as PowerMenu.qml).
+    // An XPanelWindow here gets TILED into the workspace layout by i3,
+    // pushing other windows down; a floated RealWindow does not.
+    RealWindow.Window {
         id: popup
-        visible: root.popupOpen && root.hasBattery
-        screen: root.screenInfo
-        anchors.right: true
-        anchors.top: true
-        margins.top: Style.barHeight + 4
-        exclusiveZone: 0
-        implicitWidth: 216
-        implicitHeight: 136
+        title: "Quickshell Battery"
+        flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+        visible: false
+        width: 216
+        height: 136
+        color: Style.backgroundAlt
+
+        property var modes: [
+            { icon: "\uf0e7", label: " Power Saver", mode: "power-saver" },
+            { icon: "\uf24e", label: " Balanced", mode: "balanced" },
+            { icon: "\uf135", label: " Performance", mode: "performance" },
+        ]
+        property int currentIndex: 0
 
         Rectangle {
+            id: bg
             anchors.fill: parent
             color: Style.backgroundAlt
             border.color: Style.disabled
             border.width: 1
             radius: 6
+            focus: true
+            Keys.onUpPressed: popup.currentIndex = (popup.currentIndex + 2) % 3
+            Keys.onDownPressed: popup.currentIndex = (popup.currentIndex + 1) % 3
+            Keys.onReturnPressed: popup.selectCurrent()
+            Keys.onEscapePressed: popup.hide()
 
             Column {
                 anchors.fill: parent
@@ -149,33 +208,32 @@ Item {
                 }
 
                 Repeater {
-                    model: [
-                        { icon: "\uf0e7", label: " Power Saver", mode: "power-saver" },
-                        { icon: "\uf24e", label: " Balanced", mode: "balanced" },
-                        { icon: "\uf135", label: " Performance", mode: "performance" },
-                    ]
+                    model: popup.modes
 
                     delegate: Rectangle {
                         required property var modelData
+                        required property int index
                         width: popup.width - 12
                         height: 30
                         radius: 4
-                        color: root.powerMode === modelData.mode ? Style.primary : "transparent"
+                        color: index === popup.currentIndex ? Style.background : "transparent"
 
                         Text {
                             anchors.centerIn: parent
-                            text: modelData.icon + " " + modelData.label
-                            color: root.powerMode === modelData.mode ? Style.background : Style.foreground
+                            text: (root.powerMode === modelData.mode ? "\uf00c " : "") + modelData.icon + " " + modelData.label
+                            color: index === popup.currentIndex ? Style.primary : Style.foreground
                             font.family: Style.fontFamily
                             font.pointSize: Style.fontSize
                         }
 
                         MouseArea {
                             anchors.fill: parent
+                            hoverEnabled: true
+                            onEntered: popup.currentIndex = index
                             enabled: root.ppdAvailable
                             onClicked: {
                                 root.setMode(modelData.mode)
-                                root.popupOpen = false
+                                popup.hide()
                             }
                         }
                     }
@@ -188,6 +246,58 @@ Item {
                     font.family: Style.fontFamily
                     font.pointSize: Style.smallFontSize
                 }
+            }
+        }
+
+        // position BEFORE mapping: i3 honors the requested position for
+        // floating windows, but ignores position changes made after map
+        function toggle() {
+            if (root.popupOpen) { popup.hide(); return }
+            // mapToGlobal gives the module's true screen position:
+            // root.x is row-relative inside the right-aligned bar Row
+            const g = root.mapToGlobal(root.width, 0)
+            popup.x = g.x - popup.width - 4
+            popup.y = g.y + Style.barHeight + 4
+            root.popupOpen = true
+            popup.currentIndex = 0
+            popup.visible = true
+            moveTimer.tries = 0
+            moveTimer.start()
+            bg.forceActiveFocus()
+            popup.requestActivate()
+        }
+
+        function hide() {
+            root.popupOpen = false
+            popup.visible = false
+            moveTimer.stop()
+        }
+
+        function selectCurrent() {
+            const m = popup.modes[popup.currentIndex]
+            if (m && root.ppdAvailable) {
+                root.setMode(m.mode)
+                popup.hide()
+            }
+        }
+
+        IpcHandler {
+            target: "battery"
+            function toggle(): void {
+                popup.toggle()
+            }
+        }
+
+        // i3 can still race us at map time, so keep nudging the window
+        // into place for a few hundred ms until it sticks
+        Timer {
+            id: moveTimer
+            interval: 50
+            repeat: true
+            property int tries: 0
+            onTriggered: {
+                root.run(["i3-msg", "[title=\"Quickshell Battery\"]", "move", "position", String(popup.x), String(popup.y)])
+                if (++moveTimer.tries >= 8) moveTimer.stop()
             }
         }
     }

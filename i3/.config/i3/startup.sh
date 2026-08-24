@@ -23,6 +23,14 @@ feh --bg-fill $HOME/Pictures/Wallpapers/Wallpaper.png 2>/dev/null || xsetroot -s
 # Clipboard history watcher (cliphist)
 ~/.config/quickshell/scripts/cliphist-watch.sh &
 
-# Flameshot (screenshot tool)
-flameshot &
+# Flameshot (screenshot tool) — the xdg portal isn't ready at boot, so it
+# exits immediately; skip if already running, otherwise retry until it sticks.
+(
+    pgrep -x flameshot >/dev/null 2>&1 && exit 0
+    for i in 1 2 3 4 5 6; do
+        flameshot >/dev/null 2>&1 &
+        sleep 3
+        pgrep -x flameshot >/dev/null 2>&1 && break
+    done
+) &
 

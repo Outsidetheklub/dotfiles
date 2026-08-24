@@ -38,8 +38,7 @@ Item {
 
     Process {
         id: queryProc
-        command: ["sh", "-c",
-            "i3-msg -t get_tree | jq -r '.. | objects | select(.focused == true and .window != null and .name != null) | .name' | head -1"]
+        command: ["sh", "-c", "i3-msg -t get_tree | ~/.config/quickshell/scripts/focused-title.py"]
         running: true
         stdout: StdioCollector {
             waitForEnd: true

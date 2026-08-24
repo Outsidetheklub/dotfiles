@@ -236,14 +236,27 @@ Item {
         }
 
         function toggle() {
-            btPopup.visible = !btPopup.visible
             if (btPopup.visible) {
-                btPopup.run(["bluetoothctl", "agent", "on"])
-                btPopup.run(["bluetoothctl", "default-agent"])
-                refresh()
-                btBg.forceActiveFocus()
-                btPopup.requestActivate()
+                btPopup.visible = false
+                return
             }
+            // position under the module BEFORE mapping (root.x is row-relative)
+            const g = root.mapToGlobal(root.width, 0)
+            btPopup.x = g.x - btPopup.width - 4
+            btPopup.y = g.y + Style.barHeight + 4
+            btPopup.visible = true
+            btPopup.run(["bluetoothctl", "agent", "on"])
+            btPopup.run(["bluetoothctl", "default-agent"])
+            refresh()
+            btBg.forceActiveFocus()
+            btPopup.requestActivate()
+            moveTimer.start()
+        }
+
+        Timer {
+            id: moveTimer
+            interval: 50
+            onTriggered: btPopup.run(["i3-msg", "[title=\"Quickshell Bluetooth\"]", "move", "position", String(btPopup.x), String(btPopup.y)])
         }
 
         function refresh() {

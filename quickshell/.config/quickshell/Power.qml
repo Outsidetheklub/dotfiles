@@ -28,13 +28,11 @@ Item {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            // tell the shared popup which screen's right edge to sit under
-            const si = root.screenInfo
-            if (si) {
-                root.run(["qs", "ipc", "call", "power", "toggleAt", String(si.x + si.width), String(si.y)])
-            } else {
-                root.run(["qs", "ipc", "call", "power", "toggle"])
-            }
+            // mapToGlobal: the module's true screen position (root.x is
+            // row-relative inside the right-aligned bar Row), so the menu
+            // floats right under the power button
+            const g = root.mapToGlobal(root.width, 0)
+            root.run(["qs", "ipc", "call", "power", "toggleAt", String(g.x), String(g.y)])
         }
     }
 }

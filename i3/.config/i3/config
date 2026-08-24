@@ -22,7 +22,10 @@ exec_always --no-startup-id xsetroot -solid "#1e1e2e"
 exec_always --no-startup-id picom -b
 exec_always --no-startup-id $HOME/.config/i3/startup.sh
 exec_always --no-startup-id $HOME/.config/i3/mouse-watch.sh
-exec_always --no-startup-id sleep 2 && QT_QPA_PLATFORMTHEME=gtk3 quickshell -n -p $HOME/.config/quickshell
+# quickshell doesn't reconnect after an i3 restart (new IPC socket), and a
+# second instance refuses to start while the old one still runs → kill the
+# stale instance first so the fresh one connects to the new socket.
+exec_always --no-startup-id pkill -x quickshell; sleep 2 && QT_QPA_PLATFORMTHEME=gtk3 quickshell -n -p $HOME/.config/quickshell
 #exec_always --no-startup-id dunst  # replaced by quickshell notifications
 # nm-applet removed — clicking WiFi module replaces it
 exec_always --no-startup-id redshift -l 59.33:18.07 &
@@ -46,6 +49,7 @@ new_float none
 for_window [class=".*"] border none
 for_window [title="Quickshell Launcher"] floating enable, move position 0 0
 for_window [title="Quickshell Power"] floating enable
+for_window [title="Quickshell Battery"] floating enable
 for_window [title="Quickshell Notifications"] floating enable
 for_window [title="Quickshell Root"] floating enable
 for_window [title="Quickshell Clipboard"] floating enable
@@ -61,6 +65,7 @@ for_window [window_type="normal" title="^quickshell$"] move scratchpad
 bindsym $mod+space exec qs ipc call launcher toggle
 bindsym $mod+b exec $browser
 bindsym $mod+c exec qs ipc call calc toggle
+bindsym $mod+p exec qs ipc call battery toggle
 
 # ── Terminal ─────────────────────────────────────
 bindsym $mod+Return exec $terminal
