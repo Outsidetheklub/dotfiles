@@ -36,7 +36,9 @@ Item {
         id: label
         anchors.centerIn: parent
         text: root.iconGlyph + " " + root.capacity + "%"
-        color: (root.capacity <= 20 && !root.charging) ? Style.alert : Style.foreground
+        // #ffffff matches the other bar modules (Ram, Volume, Network, Date);
+        // alert stays for low-battery warning
+        color: (root.capacity <= 20 && !root.charging) ? Style.alert : "#ffffff"
         font.family: Style.fontFamily
         font.pointSize: Style.moduleFontSize
     }
