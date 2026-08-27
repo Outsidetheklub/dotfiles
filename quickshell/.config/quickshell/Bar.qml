@@ -36,6 +36,7 @@ XPanelWindow {
             height: parent.height
             screenName: root.screen ? root.screen.name : ""
         }
+        Mode { height: parent.height }
         WindowTitle { height: parent.height }
     }
 
