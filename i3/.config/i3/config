@@ -172,8 +172,8 @@ bindsym $mod+v exec qs ipc call clipboard toggle
 bindsym $mod+Shift+v exec qs ipc call clipboard deleteMode
 bindsym $mod+period exec qs ipc call emoji toggle
 
-# ── Apple Music (Cider) ──────────────────────────
-bindsym $mod+m exec --no-startup-id cider
+# ── Spotify ──────────────────────────
+bindsym $mod+m exec spotify-launcher
 
 # ── Reload / restart / exit ────────────────────
 bindsym $mod+Shift+c reload
