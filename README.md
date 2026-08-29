@@ -89,7 +89,7 @@ reboot
 | `$mod+Shift+v` | Clipboard delete mode (click entries to remove) |
 | `$mod+period` | Emoji picker (Quickshell) |
 | `$mod+Escape` | Power menu (Quickshell) |
-| `$mod+m` | Apple Music (Cider) |
+| `$mod+m` | Spotify (spotify-launcher) |
 | `Print` | Screenshot full (flameshot) |
 | `$mod+Shift+s` | Screenshot area (flameshot) |
 | `$mod+minus` | Scratchpad show |
