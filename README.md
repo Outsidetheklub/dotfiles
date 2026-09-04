@@ -19,6 +19,7 @@ My Arch Linux configs managed with GNU Stow.
 | `sddm` | SDDM config (stow with sudo to /) |
 | `fontconfig` | Emoji fallback font rules (stow with sudo to /) |
 | `wallpapers` | Desktop wallpaper (stow to ~) |
+| `pkg-sources` | My own script that checks where packages are from — [more info & install](https://github.com/Outsidetheklub/pkg-sources) |
 
 > Clipboard history is provided by **cliphist** (fed by `~/.config/quickshell/scripts/cliphist-watch.sh`, started from `i3/startup.sh`). The Quickshell clipboard popup reads/deletes from it.
 
