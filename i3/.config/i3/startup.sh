@@ -34,3 +34,8 @@ feh --bg-fill $HOME/Pictures/Wallpapers/Wallpaper.png 2>/dev/null || xsetroot -s
     done
 ) &
 
+# Gamepad idle guard — DPMS can't see controller input, so it would blank the
+# screen mid-game ("AFK"). This watcher disables blanking while the gamepad
+# is in use and restores it when back on mouse/keyboard. (singleton via flock)
+~/.local/bin/gamepad-idle-guard >> /tmp/gamepad-idle-guard.log 2>&1 &
+
