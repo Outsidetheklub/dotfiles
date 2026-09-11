@@ -30,7 +30,7 @@ My Arch Linux configs managed with GNU Stow.
 #### Official repos
 
 ```bash
-sudo pacman -S stow thunar i3-wm cliphist fastfetch kitty fish picom redshift starship flameshot feh polkit-gnome xorg-xrandr xorg-xinput xorg-xsetroot sddm qt6-virtualkeyboard noto-fonts-emoji xsel ttf-meslo-nerd eza xdotool
+sudo pacman -S stow thunar i3-wm cliphist fastfetch kitty fish picom redshift starship flameshot feh polkit-gnome xorg-xrandr xorg-xinput xorg-xsetroot sddm qt6-virtualkeyboard noto-fonts-emoji xsel ttf-meslo-nerd eza xdotool zoxide
 ```
 
 #### AUR (paru / yay)

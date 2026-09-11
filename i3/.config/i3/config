@@ -80,6 +80,12 @@ bindsym $mod+Right focus right, exec --no-startup-id ~/.local/bin/mouse-to-focus
 bindsym $mod+Shift+Left move container to output DP-4, focus output DP-4
 bindsym $mod+Shift+Right move container to output HDMI-0, focus output HDMI-0
 
+# ── Projector / external display (laptop) ──────────
+# $mod+Shift+p = mirror laptop onto projector (press again to turn off)
+# $mod+Shift+x = extend (projector as extra screen to the right)
+bindsym $mod+Shift+p exec --no-startup-id $HOME/.local/bin/projector.sh
+bindsym $mod+Shift+x exec --no-startup-id $HOME/.local/bin/projector.sh extend
+
 # ── Move windows ────────────────────────────────
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down

@@ -43,3 +43,4 @@ if status is-interactive
     end
     
 end
+zoxide init fish | source
