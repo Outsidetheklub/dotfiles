@@ -5,7 +5,7 @@
 # ── Basics ───────────────────────────────────────
 set $mod Mod4
 set $terminal kitty
-set $browser brave
+set $browser zen-browser
 set $editor vscodium
 set $filemanager thunar
 
