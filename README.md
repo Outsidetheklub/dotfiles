@@ -1,5 +1,7 @@
 # dotfiles
 
+## THIS IS NOT BEING UPDATED ANYMORE!
+
 My Arch Linux configs managed with GNU Stow.
 
 ## What's inside
